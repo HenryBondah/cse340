@@ -4,3 +4,172 @@
 *:after {
   box-sizing: border-box;
 }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header Styles */
+header#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+}
+
+header#top-header .siteName {
+  display: flex;
+  align-items: center;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+header#top-header .siteName a {
+  text-decoration: none;
+  color: #333;
+}
+
+header#top-header #tools {
+  display: flex;
+  align-items: center;
+}
+
+header#top-header #tools a {
+  text-decoration: none;
+  color: #007bff;
+  padding-left: 15px;
+}
+
+.logo {
+  width: 90px; 
+  height: auto;
+  margin-right: 10px;
+}
+
+/* Navigation Styles */
+nav {
+  background-color: black;
+  text-align: center;
+  padding: 10px 0;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  color: #f8f8f8;
+}
+
+nav ul li {
+  display: inline;
+  margin: 0 15px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: white;
+  font-size: 1em;
+}
+
+.account-link {
+  float: right;
+}
+
+main {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 15px;
+}
+
+.welcome-section h2 {
+  margin-bottom: 20px;
+}
+.welcome-section img {
+  display: block;
+  margin-left: 100px;
+  margin-right: auto;
+  width: 50%;
+}
+
+.car-features {
+  position: absolute;
+  border: 1px solid #333;
+  padding: 15px;
+  margin: 20px 0;
+  background-color: rgba(248, 248, 248, 0.5);
+  border-radius: 8px;
+  top: 230px;
+}
+
+/* .car-features h2 {
+  color: #000000; 
+} */
+
+button {
+  font-weight: bold;
+  border: none;
+  padding: 11px;
+  margin-top: 10px;   background-color: #0066cc;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.car-image {
+  max-width: 100%;
+  height: auto;
+  margin: 20px 0;
+}
+
+
+
+/* .reviews li {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+} 
+
+.upgrades-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.upgrade {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.upgrade-image {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 5px;
+} */ 
+
+/* Footer Styles */
+footer {
+  border-top: 2px solid black;
+  text-align: center;
+  padding: 10px;
+  font-size: 0.8em;
+  background-color: #f8f8f8;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .account-link {
+      float: none;
+      display: block;
+      margin-top: 10px;
+  }
+
+  nav ul li {
+      display: block;
+      margin-right: 0;
+      margin-bottom: 5px;
+  }}
