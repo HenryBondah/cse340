@@ -4,14 +4,10 @@
 *:after {
   box-sizing: border-box;
 }
-@font-face{
-  font-family:'Playfair Display, Abril Fatface, PT Serif'; 
-  src:url(<link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=PT+Serif:ital@1&family=Playfair+Display:wght@800&display=swap" rel="stylesheet">); 
-}
+
 body {
-  /* font-family:  Arial, sans-serif; */
+    font-family: 'Playfair Display', serif;
+
   margin: 0;
   padding: 0;
 }
