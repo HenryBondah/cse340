@@ -14,7 +14,7 @@ WHERE account_id = 1;
 --Q4
 UPDATE inventory 
 SET inv_description = REPLACE(inv_description, 'small interiors', 'a huge interior') 
-WHERE inv_make = 'GM' AND inv_model = 'Hummer';
+WHERE inv_id = 10;
 
 --Q5
 SELECT inv_make, inv_model, c.classification_name 
