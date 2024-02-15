@@ -232,4 +232,73 @@ footer {
       margin: 20px 0;
       margin-left: 200px;
     }
+    #inv-display li {
+      width: 45%; /* Adjust the width for medium screens */
+  }
+
+}
+
+
+/* Base styles */
+#inv-display {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#inv-display li {
+  width: 300px; /* Adjust based on preference */
+  margin: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: box-shadow 0.3s ease;
+  border-radius: 18px;
+  border-style: solid;
+
+}
+
+#inv-display li:hover {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+#inv-display img {
+  width: 100%;
+  height: 52%;
+  display: block;
+  border-radius: 19px;
+  padding: 2px;
+}
+
+.namePrice {
+  padding: 15px;
+  text-align: center;
+  background: #f8f8f8;
+}
+
+.namePrice h2, .namePrice span {
+  margin: 10px 0;
+}
+
+.namePrice hr {
+  margin: 15px 0;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
+
+
+
+@media (max-width: 480px) {
+  #inv-display {
+      justify-content: center;
+  }
+
+  #inv-display li {
+      width: 90%; /* Full width for smaller screens, adjust as necessary */
+      margin: 10px 0; /* Reduce margin for smaller screens */
+  }
 }
