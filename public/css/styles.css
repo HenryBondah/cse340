@@ -39,7 +39,7 @@ header#top-header #tools {
 
 header#top-header #tools a {
   text-decoration: none;
-  color: #007bff;
+  color: #0018ff;
   padding-left: 15px;
 }
 
@@ -160,7 +160,7 @@ footer {
 }
 .upgrade-name {
   text-align: center;
-  color: #007bff; 
+  color: #0015ff;
   position: absolute; 
   bottom: -27px; 
   padding: 5px;
