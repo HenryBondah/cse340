@@ -17,7 +17,7 @@ header#top-header {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #f8f8f8;
+  background-color: #FFFFFF;
 }
 
 header#top-header .siteName {
@@ -104,7 +104,7 @@ main {
   top: 200px;
 }
 .car-features h3, h2{
-  color: #0066cc;
+  color: #0051A8;
 }
 
 button {
