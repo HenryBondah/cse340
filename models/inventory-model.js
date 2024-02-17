@@ -27,5 +27,21 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
-module.exports = {getClassifications, getInventoryByClassificationId};
+// In inventory-model.js
+
+// Assuming the detail_id corresponds to a unique identifier for an inventory item
+async function getInventoryByDetailId(detail_id) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM public.inventory WHERE inv_id = $1`,
+      [detail_id]
+    );
+    return data.rows;
+  } catch (error) {
+    console.error("Error fetching inventory detail: ", error);
+  }
+}
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByDetailId };
+
 

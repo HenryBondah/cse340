@@ -58,6 +58,37 @@ Util.buildClassificationGrid = async function(data){
   return grid
 }
 
+
+
+
+/* **************************************
+* Build the detail view HTML   added
+* ************************************ */
+Util.buildDetailGrid = function(data) {
+  let grid = "";
+  console.log(data)
+  if(data && data.length > 0) {
+    const vehicle = data[0]; 
+    grid += '<div class="vehicle-detail">';
+grid += `<h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>`; // This remains at the top
+grid += '<div class="vehicle-content">'; // Encapsulates the side-by-side content for large views
+grid += `<img src="${vehicle.inv_thumbnail}" alt="Image of ${vehicle.inv_make} ${vehicle.inv_model}" />`;
+grid += '<div class="detail-text">'; // Wraps the text details for better control
+grid += `<p>Price: $${new Intl.NumberFormat('en-US').format(vehicle.inv_price)}</p>`;
+grid += `<p>Description: ${vehicle.inv_description}</p>`;
+grid += `<p><strong>Mileage:</strong> ${vehicle.inv_miles} miles</p>`;
+grid += `<p><strong>Color:</strong> ${vehicle.inv_color}</p>`;
+grid += '</div>'; // Close .detail-text
+grid += '</div>'; // Close .vehicle-content
+grid += '</div>'; // Close .vehicle-detail
+
+  } else {
+    grid = '<p class="notice">Sorry, vehicle details could not be found.</p>';
+  }
+  return grid;
+}
+
+
 /* ****************************************
  * Middleware For Handling Errors
  * Wrap other function in this for 

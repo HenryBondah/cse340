@@ -17,7 +17,7 @@ header#top-header {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #FFFFFF;
+  background-color: #f8f8f8;
 }
 
 header#top-header .siteName {
@@ -39,7 +39,7 @@ header#top-header #tools {
 
 header#top-header #tools a {
   text-decoration: none;
-  color: #0018ff;
+  color: #007bff;
   padding-left: 15px;
 }
 
@@ -104,7 +104,7 @@ main {
   top: 200px;
 }
 .car-features h3, h2{
-  color: #0051A8;
+  color: #0066cc;
 }
 
 button {
@@ -144,7 +144,7 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #52A8FF; 
+  background-color: #007bff; 
   /* padding: 28px; */
   margin-bottom: 20px;
   border-radius: 5px;
@@ -160,7 +160,7 @@ footer {
 }
 .upgrade-name {
   text-align: center;
-  color: #000000;
+  color: #007bff; 
   position: absolute; 
   bottom: -27px; 
   padding: 5px;
@@ -300,5 +300,58 @@ h1 {
   #inv-display li {
       width: 90%; /* Full width for smaller screens, adjust as necessary */
       margin: 10px 0; /* Reduce margin for smaller screens */
+  }
+}
+
+/* detail page */
+.vehicle-detail {
+  width: 80%;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1.1);
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.vehicle-detail h1 {
+  margin: 10px 0; /* Ensure the title has some margin */
+}
+
+.vehicle-detail img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+  border-style: solid;
+  border-radius: 10px;
+}
+
+.detail-text p {
+  margin: 10px 0;
+}
+
+.notice {
+  text-align: center;
+  color: #ff0000;
+}
+
+/* Large view adjustments */
+@media (min-width: 1024px) {
+  .vehicle-content {
+    display: grid; 
+    grid-template-columns: 60% 40%; 
+    gap: 20px; 
+    align-items: start; 
+  }
+
+  .vehicle-detail img {
+    object-fit: cover; 
+    height: 100%; 
+    margin-bottom: 0; 
+  }
+
+  .detail-text {
+    text-align: left; 
+    position: relative;
+    right: 79px;
   }
 }
