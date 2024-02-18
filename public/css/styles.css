@@ -39,7 +39,7 @@ header#top-header #tools {
 
 header#top-header #tools a {
   text-decoration: none;
-  color: #007bff;
+  color: #000000;
   padding-left: 15px;
 }
 
@@ -144,7 +144,7 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: #007bff; 
+  background-color: #57a8ff; 
   /* padding: 28px; */
   margin-bottom: 20px;
   border-radius: 5px;
@@ -160,7 +160,7 @@ footer {
 }
 .upgrade-name {
   text-align: center;
-  color: #007bff; 
+  color: #000000; 
   position: absolute; 
   bottom: -27px; 
   padding: 5px;
@@ -305,7 +305,7 @@ h1 {
 
 /* detail page */
 .vehicle-detail {
-  width: 80%;
+  width: 65%;
   margin: 0 auto;
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1.1);
