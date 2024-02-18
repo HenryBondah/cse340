@@ -22,25 +22,37 @@ invCont.buildByClassificationId = async function (req, res, next) {
   })
 }
 
+
+
 /* ***************************
  *  Build DETAIL by classification view
  * ************************** */
 invCont.buildByDetailId = async function (req, res, next) {
-  const detail_id = req.params.detailId
-  console.log("detail_id: ", detail_id)
+  const detail_id = req.params.detailId;
+  console.log("detail_id: ", detail_id);
 
-  const data = await invModel.getInventoryByDetailId(detail_id)
-  console.log("detailData: ", data)
-  
-  const grid = await utilities.buildDetailGrid(data)
-  let nav = await utilities.getNav()
+  const data = await invModel.getInventoryByDetailId(detail_id);
+  console.log("detailData: ", data);
 
-  const detailId = data[0].detail_id
-  res.render("./inventory/detail", {
-    title: detailId + " vehicles",
-    nav,
-    grid,
-  })
-}
+  if (data && data.length > 0) {
+    const grid = await utilities.buildDetailGrid(data);
+    let nav = await utilities.getNav();
+
+    const detailId = data[0].detail_id;
+    res.render("./inventory/detail", {
+      title: data[0].inv_make + ' ' + data[0].inv_model + " Details", // Adjusted to use vehicle make and model as title
+      nav,
+      grid,
+    });
+  } else {
+    // Handle the case where no data is returned or an empty array is returned
+    let nav = await utilities.getNav(); // Ensure navigation is still loaded
+    res.render("./inventory/detail", {
+      title: "Vehicle Not Found",
+      nav,
+      grid: "<p>Vehicle details could not be found.</p>",
+    });
+  }
+};
 
 module.exports = invCont
