@@ -8,7 +8,7 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 router.get("/detail/:detailId", invController.buildByDetailId);
 module.exports = router;
 
-router.get("/trigger-error", (req, res, next) => {
+router.get("/trigger-error",(req, res, next) => {
     // Intentionally throw an error
     const err = new Error("Intentional 500 Error Triggered");
     err.status = 500; // Set the error status to 500
