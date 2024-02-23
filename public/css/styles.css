@@ -355,3 +355,76 @@ h1 {
     right: 79px;
   }
 }
+
+
+
+
+
+/* Container styling for both login and register */
+.login-container,
+.register-container {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  margin: 20px auto;
+  max-width: 400px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+}
+
+/* Styling form elements */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Styling the submit button */
+button[type="submit"] {
+  background-color: #0056b3;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+}
+
+button[type="submit"]:hover {
+  background-color: #004494;
+}
+
+/* Link styling */
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Checkbox for showing passwords */
+.form-group input[type="checkbox"] {
+  margin-top: 5px;
+}
+
+/* Notices and alerts */
+.notice {
+  color: #ff0000;
+}
