@@ -17,8 +17,8 @@
 <% } %>
 
 <div class="register-container">
-  <p>All fields are required</p>
   <form action="/account/register" method="post">
+    <p>All fields are required</p>
     <div class="form-group">
       <label for="account_firstname">First Name:</label>
       <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">

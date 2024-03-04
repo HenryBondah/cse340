@@ -357,20 +357,6 @@ h1 {
 }
 
 
-
-
-
-/* Container styling for both login and register */
-.login-container,
-.register-container {
-  background-color: #fff;
-  border: 1px solid #ddd;
-  margin: 20px auto;
-  max-width: 400px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 h2 {
   color: #333;
 }
@@ -427,4 +413,115 @@ a:hover {
 /* Notices and alerts */
 .notice {
   color: #ff0000;
+}
+
+
+/* General Styles */
+
+h1 {
+  color: #333;
+  font-size: 24px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.notice, .error {
+  color: #d8000c;
+  background-color: #ffbaba;
+  border: 1px solid #d8000c;
+  margin: 20px auto;
+  padding: 10px;
+  width: 90%;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.notice li, .error li {
+  list-style-type: none;
+}
+
+form label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  display: block; 
+}
+form {
+  max-width: 600px;
+  margin: 20px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+
+form input[type="text"],
+form select,
+form textarea {
+    width: 100%; 
+    box-sizing: border-box; 
+    margin-bottom: 20px; 
+}
+form textarea {
+  height: 100px;
+}
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+
+/* Specific Styles */
+
+/* Management Container Styles */
+.management-container {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.management-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.management-container ul li {
+  margin-bottom: 10px;
+}
+
+.management-container ul li a {
+  display: block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.management-container ul li a:hover {
+  background-color: #0056b3;
+}
+
+/* Small Screens Adjustments */
+@media (max-width: 768px) {
+  form, .management-container {
+      width: 90%;
+      padding: 15px;
+  }
 }
