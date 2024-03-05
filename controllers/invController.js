@@ -1,4 +1,3 @@
-
 const invModel = require("../models/inventory-model");
 const utilities = require("../utilities/");
 const { validationResult } = require('express-validator'); // Import validationResult for handling form validations
@@ -68,27 +67,24 @@ invCont.showAddClassificationForm = async function(req, res) {
     });
 };
 
-
 /* ***************************
  *  Add a Classification with Validation
  * ************************** */
 invCont.addClassification = async function(req, res) {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.render('inventory/addClassification', {
-            title: "Add New Classification",
-            errors: errors.array(),
-            formData: req.body
-        });
-    }
     try {
         await invModel.addClassification(req.body.classification_name);
         req.flash('success', 'Classification added successfully.');
-        res.redirect('/inv/management');
+        console.log("try executed")
+        const nav = await utilities.getNav()
+        res.render("inventory/managementView", {
+            title: "Vihicle Management",
+            nav,
+        });
     } catch (error) {
+        console.log("catch executed")
         console.error("Failed to add classification:", error);
         req.flash('error', 'Failed to add classification.');
-        res.redirect('/inv/add-classification');
+        res.redirect('/inventory/managementView');
     }
 };
 
@@ -96,21 +92,25 @@ invCont.addClassification = async function(req, res) {
  *  Show Form for Adding an Inventory Item
  * ************************** */
 invCont.showAddInventoryForm = async function(req, res) {
+    const errors = req.flash('errors');
+    const formData = req.flash('formData')[0]; // Since flash stores items in an array
     try {
-        const result = await invModel.getClassifications();
-        const classifications = result.rows;
-        let nav = await utilities.getNav(); // Fetch navigation links
+        const classifications = await invModel.getClassifications();
+        let nav = await utilities.getNav();
         res.render("inventory/addInventory", {
-            title: "Add Vihicle",
-            classifications,
-            nav // Pass the navigation data to the view
+            title: "Add Vehicle",
+            classifications: classifications.rows,
+            formData: formData || {}, // Provide an empty object as fallback
+            errors: errors,
+            nav
         });
     } catch (error) {
-        console.error("Error loading add inventory form:", error);
-        // Consider adding error handling here as well
+        console.log("catch executed")
+        console.error("Failed to add classification:", error);
+        req.flash('error', 'Failed to add classification.');
+        res.redirect('inventory/addInventory');
     }
-  };
-  
+};
 
 /* ***************************
  *  Add an Inventory Item with Validation and Sticky Form Functionality
@@ -118,27 +118,28 @@ invCont.showAddInventoryForm = async function(req, res) {
 invCont.addInventoryItem = async function(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        // Pass back errors and form data
         req.flash('errors', errors.array());
-        req.flash('formData', req.body);
+        req.flash('formData', req.body); // Retain form data
         return res.redirect('/inv/add-inventory');
     }
     try {
-        // Extract data from req.body with your specified fields
         const inventoryData = {
+            // Assuming your form field names match these keys
             inv_make: req.body.make,
             inv_model: req.body.model,
-            classification_id: req.body.classification_id,
+            inv_year: req.body.year,
+            inv_description: req.body.description,
             inv_image: req.body.image_path,
             inv_thumbnail: req.body.thumbnail_path,
             inv_price: req.body.price,
-            inv_description: req.body.description,
-            inv_year: req.body.year,
             inv_miles: req.body.miles,
-            inv_color: req.body.color
+            inv_color: req.body.color,
+            classification_id: req.body.classification_id
         };
         await invModel.addInventoryItem(inventoryData);
         req.flash('success', 'Inventory item added successfully.');
-        res.redirect('/inv/management');
+        res.redirect('/inv/add-inventory'); // Adjust according to your success redirect logic
     } catch (error) {
         console.error("Failed to add inventory item:", error);
         req.flash('error', 'Failed to add inventory item.');

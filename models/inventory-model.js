@@ -7,8 +7,6 @@ async function getClassifications(){
   return await pool.query("SELECT * FROM public.classification ORDER BY classification_name")
 }
 
-
-
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
  * ************************** */
@@ -28,8 +26,6 @@ async function getInventoryByClassificationId(classification_id) {
 }
 
 // In inventory-model.js
-
-// Assuming the detail_id corresponds to a unique identifier for an inventory item
 async function getInventoryByDetailId(detail_id) {
   try {
     const data = await pool.query(
@@ -55,15 +51,40 @@ async function addClassification(classificationName) {
 }
 
 // Add a new inventory item to the database
+// In inventory-model.js
+
 async function addInventoryItem(inventoryData) {
   try {
     const result = await pool.query(
-      "INSERT INTO public.inventory (inv_make, inv_model, classification_id, inv_image, inv_thumbnail, inv_price, inv_description) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [inventoryData.inv_make, inventoryData.inv_model, inventoryData.classification_id, inventoryData.inv_image, inventoryData.inv_thumbnail, inventoryData.inv_price, inventoryData.inv_description]
+      `INSERT INTO public.inventory (
+        inv_make,
+        inv_model,
+        inv_year,
+        inv_description,
+        inv_image,
+        inv_thumbnail,
+        inv_price,
+        inv_miles,
+        inv_color,
+        classification_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+      [
+        inventoryData.inv_make,
+        inventoryData.inv_model,
+        inventoryData.inv_year,
+        inventoryData.inv_description,
+        inventoryData.inv_image,
+        inventoryData.inv_thumbnail,
+        inventoryData.inv_price,
+        inventoryData.inv_miles,
+        inventoryData.inv_color,
+        inventoryData.classification_id
+      ]
     );
-    return result.rows[0];
+    return result.rows[0]; // Returns the added inventory item
   } catch (error) {
-    throw error;
+    console.error("Error adding inventory item:", error);
+    throw error; // Re-throw the error to be handled by the caller
   }
 }
 

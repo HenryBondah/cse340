@@ -1,50 +1,51 @@
-<!-- addInventory.ejs -->
-<% if (title) { %>
+<% if (typeof formData !== 'undefined') { %>
   <h1><%= title %></h1>
-<% } %>
-<%- messages() %>
-
-<form action="/inv/add-inventory" method="post">
-  <label for="classification_id">Classification:</label>
-  <select id="classification_id" name="classification_id" required>
-    <% if (Array.isArray(classifications)) { %>
-      <% classifications.forEach(function(classification) { %>
-        <option value="<%= classification.classification_id %>" <%= typeof classification_id !== 'undefined' && classification_id === classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
+  <%- messages() %>
+  <% if (errors && errors.length > 0) { %>
+    <ul class="errors">
+      <% errors.forEach(function(error) { %>
+        <li><%= error.msg %></li>
       <% }); %>
-    <% } else { %>
-      <option value="">No classifications available</option>
-    <% } %>
-  </select>
-  <!-- The rest of your form fields as they were -->
+    </ul>
+  <% } %>
 
-  <label for="make">Make (min of 3 characters):</label>
-  <input type="text" id="make" name="make" value="<%= typeof make !== 'undefined' ? make : '' %>" minlength="3" required placeholder="e.g., Toyota">
-  
-  <label for="model">Model (min of 3 characters):</label>
-  <input type="text" id="model" name="model" value="<%= typeof model !== 'undefined' ? model : '' %>" minlength="3" required placeholder="e.g., Camry">
-  
-  <label for="description">Description:</label>
-  <textarea id="description" name="description" required placeholder="Provide a detailed description of the vehicle"></textarea>
-  
-  <label for="image_path">Image Path:</label>
-  <input type="text" id="image_path" name="image_path" value="<%= typeof image_path !== 'undefined' ? image_path : '' %>" placeholder="URL to the vehicle image">
-  
-  <label for="thumbnail_path">Thumbnail Path:</label>
-  <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= typeof thumbnail_path !== 'undefined' ? thumbnail_path : '' %>" placeholder="URL to the vehicle thumbnail">
-  
-  <label for="price">Price (Decimal or Integer):</label>
-  <input type="text" id="price" name="price" pattern="^\d*(\.\d+)?$" value="<%= typeof price !== 'undefined' ? price : '' %>" required placeholder="e.g., 19999.99">
-  
-  <label for="year">Year (4 numbers):</label>
-  <input type="text" id="year" name="year" pattern="^\d{4}$" value="<%= typeof year !== 'undefined' ? year : '' %>" required placeholder="e.g., 2020">
-  
-  <label for="miles">Miles (Digits only):</label>
-  <input type="text" id="miles" name="miles" pattern="^\d+$" value="<%= typeof miles !== 'undefined' ? miles : '' %>" required placeholder="e.g., 50000">
-  
-  <label for="color">Color:</label>
-  <input type="text" id="color" name="color" value="<%= typeof color !== 'undefined' ? color : '' %>" placeholder="e.g., Red">
+  <form action="/inv/add-inventory" method="post">
+    <label for="classification_id">Classification:</label>
+    <select id="classification_id" name="classification_id" required>
+      <% classifications.forEach(function(classification) { %>
+        <option value="<%= classification.classification_id %>" <%= formData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
+      <% }); %>
+    </select>
+
+    <label for="invMake">Make (min of 3 characters):</label>
+    <input type="text" id="make" name="make" value="<%= formData.make || '' %>" minlength="3" required placeholder="e.g., Toyota">
     
- 
-
-  <button type="submit">Add Car</button>
-</form>
+    <label for="invModel">Model (min of 3 characters):</label>
+    <input type="text" id="model" name="model" value="<%= formData.model || '' %>" minlength="3" required placeholder="e.g., Camry">
+    
+    <label for="invYear">Year (4 numbers):</label>
+    <input type="text" id="year" name="year" pattern="^\d{4}$" value="<%= formData.year || '' %>" required placeholder="e.g., 2020">
+    
+    <label for="invDescription">Description:</label>
+    <textarea id="description" name="description" required placeholder="Provide a detailed description of the vehicle"><%= formData.description || '' %></textarea>
+    
+    <label for="invImage_path">Image Path:</label>
+    <input type="text" id="image_path" name="image_path" value="<%= formData.image_path || '' %>" placeholder="URL to the vehicle image">
+    
+    <label for="invThumbnail_path">Thumbnail Path:</label>
+    <input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= formData.thumbnail_path || '' %>" placeholder="URL to the vehicle thumbnail">
+    
+    <label for="invPrice">Price (Decimal or Integer):</label>
+    <input type="text" id="price" name="price" pattern="^\d*(\.\d+)?$" value="<%= formData.price || '' %>" required placeholder="e.g., 19999.99">
+    
+    <label for="invMiles">Miles (Digits only):</label>
+    <input type="text" id="miles" name="miles" pattern="^\d+$" value="<%= formData.miles || '' %>" required placeholder="e.g., 50000">
+    
+    <label for="invColor">Color:</label>
+    <input type="text" id="color" name="color" value="<%= formData.color || '' %>" placeholder="e.g., Red">
+      
+    <button type="submit">Add Car</button>                                                                                                                        
+  </form>
+<% } else { %>
+  <p>Please provide vehicle information.</p>
+<% } %>

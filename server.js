@@ -66,6 +66,36 @@ app.use("/inv", inventoryRoute)
 app.use("/account", require("./routes/accountRoute"))
 
 
+app.post('/inv/add-inventory', async (req, res) => {
+  const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body;
+  
+  try {
+    const newCar = await pool.query(
+      `INSERT INTO public.inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
+      [inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id]
+    );
+
+    // Assuming you want to redirect to a success page or back to the form with a success message
+    res.redirect('/inventory'); // Adjust this to your actual route that shows the inventory or a success message
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+app.get('/inv/add', async (req, res) => {
+  try {
+    const classificationResults = await pool.query(`SELECT * FROM classifications`);
+    res.render('addInventory', {
+      title: 'Add New Car Inventory',
+      classifications: classificationResults.rows,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 
 
 // File Not Found Route - must be last route in list
