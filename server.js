@@ -18,6 +18,7 @@ const utilities = require("./utilities/");
 const accountController = require('./controllers/accountController');
 const accountRoutes = require('./routes/accountRoute'); 
 const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
 
 
 /* ***********************
@@ -45,7 +46,7 @@ app.use(function(req, res, next){
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
+app.use(cookieParser())
 
 
 // View Engine and Templates
@@ -56,7 +57,9 @@ app.set("layout", "./layouts/layout"); // not at views root
 /* ***********************
  * Routes
  *************************/
-app.use(static);
+// app.use(static);
+app.use(express.static('public'));
+
 
 // index route 
 app.get("/", baseController.buildHome);

@@ -3,30 +3,28 @@ const express = require("express");
 const router = new express.Router();
 const accountController = require('../controllers/accountController');
 const utilities = require('../utilities/'); 
-const { route } = require("./static");
-const regValidate = require('../utilities/account-validation')
+const regValidate = require('../utilities/account-validation');
 
 // Route to build login view
-router.get("/login", utilities.handleErrors(accountController.buildLogin))
-//route to registration view
-router.get("/register", utilities.handleErrors(accountController.buildRegister))
+router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
-//route to enabke registration route
+// Route to registration view
+router.get("/register", utilities.handleErrors(accountController.buildRegister));
+
 // Process the registration data
 router.post(
-    "/register",
-    regValidate.registationRules(),
-    regValidate.checkRegData,
-    utilities.handleErrors(accountController.registerAccount)
-  )
+  "/register",
+  regValidate.registrationRules(),
+  regValidate.checkRegData,
+  utilities.handleErrors(accountController.registerAccount)
+);
 
-// Login route
+// Process the login request
 router.post(
   "/login",
   regValidate.loginRules(),
   regValidate.checkLoginData,
+  utilities.handleErrors(accountController.accountLogin) // Updated line to use controller-based function wrapped in error handler
 );
 
-  
 module.exports = router;
-

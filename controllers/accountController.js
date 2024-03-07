@@ -2,6 +2,8 @@
 const utilities = require('../utilities/index');
 const { registerAccount: registerAccountModel, checkExistingEmail } = require('../models/account-model');
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 /* ****************************************
 *  Deliver login view
