@@ -13,4 +13,3 @@ function togglePassword() {
       password.type = password.type === "password" ? "text" : "password";
     }
   }
-  

@@ -1,3 +1,27 @@
 <nav>
-    <%- nav %>
+    <div class="hamburger-menu">
+        <button id="hamburger-button">&#9776;</button>
+    </div>
+    <ul id="nav-links" class="hidden">
+        <nav>
+            <%- nav %>
+            <li><button id="close-button" class="close-btn">X</button></li>
+        </nav>
+    </ul>
 </nav>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const openButton = document.getElementById('hamburger-button');
+      const closeButton = document.getElementById('close-button');
+      const navLinks = document.getElementById('nav-links');
+    
+      openButton.addEventListener('click', function() {
+        navLinks.classList.remove('hidden');
+      });
+    
+      closeButton.addEventListener('click', function() {
+        navLinks.classList.add('hidden');
+      });
+    });
+    </script>
+    

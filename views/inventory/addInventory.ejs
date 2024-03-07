@@ -30,10 +30,10 @@
 <textarea id="description" name="description" required placeholder="Provide a detailed description of the vehicle"><%= formData.description || '' %></textarea>
 
 <label for="image_path">Image Path:</label>
-<input type="text" id="image_path" name="image_path" value="<%= formData.image_path || '' %>" placeholder="URL to the vehicle image">
+<input type="text" id="image_path" name="image_path" value="<%= formData.image_path || '' %>" required placeholder="URL to the vehicle image">
 
 <label for="thumbnail_path">Thumbnail Path:</label>
-<input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= formData.thumbnail_path || '' %>" placeholder="URL to the vehicle thumbnail">
+<input type="text" id="thumbnail_path" name="thumbnail_path" value="<%= formData.thumbnail_path || '' %>" required placeholder="URL to the vehicle thumbnail">
 
 <label for="price">Price (Decimal or Integer):</label>
 <input type="text" id="price" name="price" pattern="^\d*(\.\d+)?$" value="<%= formData.price || '' %>" required placeholder="e.g., 19999.99">
@@ -42,7 +42,7 @@
 <input type="text" id="miles" name="miles" pattern="^\d+$" value="<%= formData.miles || '' %>" required placeholder="e.g., 50000">
 
 <label for="color">Color:</label>
-<input type="text" id="color" name="color" value="<%= formData.color || '' %>" placeholder="e.g., Red">
+<input type="text" id="color" name="color" value="<%= formData.color || '' %>" required placeholder="e.g., Red">
 
 <button type="submit">Add Car</button>
                                                                                                                   

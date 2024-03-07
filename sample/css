@@ -49,11 +49,11 @@ header#top-header #tools a {
   margin-right: 10px;
 }
 
-/* Base Styles for Navigation */
 nav { 
   background-color: black;
   text-align: center;
   padding: 10px 0;
+
 }
 
 nav ul {
@@ -70,96 +70,15 @@ nav ul li {
   margin: 0 15px;
 }
 
-nav ul li:hover {
-  opacity: 0.7;
+nav ul li :hover{
+  opacity: 7;
   color: #0066cc;
 }
-
 nav ul li a {
   text-decoration: none;
   color: white;
   font-size: 1em;
-  padding: 10px;
 }
-
-/* Hamburger menu button */
-.hamburger-menu button {
-  background-color: black;
-  border: none;
-  color: white;
-  font-size: 2em;
-  cursor: pointer;
-  padding: 10px;
-}
-
-/* Adjustments for mobile navigation - hidden by default */
-.hidden {
-  display: none;
-}
-
-/* Close button styles - make sure it's only visible on small screens */
-.close-btn {
-  display: none; 
-  background-color: black;
-  color: white;
-  border: none;
-  font-size: 1.5em;
-  cursor: pointer;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-}
-
-/* Show nav items on the right when menu is toggled on small screens */
-@media (max-width: 767px) {
-  .hamburger-menu {
-    display: block; 
-    text-align: right; 
-  }
-
-  nav ul {
-    flex-direction: column; 
-    justify-content: flex-start; 
-    position: fixed; 
-    top: 0; 
-    right: 0; 
-    height: 100vh; 
-    width: 250px; 
-    background-color: black; 
-    transform: translateX(100%); 
-    transition: transform 0.3s ease; 
-  }
-
-  nav ul.hidden {
-    transform: translateX(100%); 
-  }
-
-  nav ul:not(.hidden) {
-    transform: translateX(0); 
-  }
-
-  nav ul li {
-    display: block; 
-    text-align: left; 
-    margin: 10px 0; 
-  }
-
-  .close-btn {
-    display: block; 
-  }
-}
-
-/* Responsive Nav for Larger Screens */
-@media (min-width: 768px) {
-  nav ul {
-    display: flex !important; 
-  }
-
-  .hamburger-menu, .close-btn {
-    display: none; 
-  }
-}
-
 
 .account-link {
   display: flex;
@@ -486,7 +405,7 @@ a:hover {
   text-decoration: underline;
 }
 
-Checkbox for showing passwords
+/* Checkbox for showing passwords */
 .form-group input[type="checkbox"] {
   margin-top: 5px;
 }
@@ -551,8 +470,8 @@ form textarea {
   height: 100px;
 }
 button {
-  background-color: #000000;
-  color: rgb(255, 255, 255);
+  background-color: #007bff;
+  color: rgb(0, 0, 0);
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
