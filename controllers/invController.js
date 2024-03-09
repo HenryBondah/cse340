@@ -139,7 +139,7 @@ invCont.addInventoryItem = async function(req, res) {
         };
         await invModel.addInventoryItem(inventoryData);
         req.flash('success', 'Inventory item added successfully.');
-        res.redirect('/inv/add-inventory'); // Adjust according to your success redirect logic
+        res.redirect('/inv/'); // Adjust according to your success redirect logic
     } catch (error) {
         console.error("Failed to add inventory item:", error);
         req.flash('error', 'Failed to add inventory item.');
