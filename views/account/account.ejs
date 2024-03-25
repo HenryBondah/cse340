@@ -18,7 +18,7 @@
 <% } %>
 
 
-<main>
+
   <% if (locals.accountData) { %>
       <h2>Welcome, <%= name %></h2>
       
@@ -27,9 +27,9 @@
           <p><a href="/inv/">Access Inventory Management</a></p>
       <% } %>
 
-      <p><a href="/account/update/ <%= locals.accountData.account_id %>">Update Account Information</a></p>
+      <p><a href="/account/update/<%= locals.accountData.account_id %>">Update Account Information</a></p>
       
   <% } else { %>
       <p>You must be logged in to view this page.</p>
   <% } %>
-</main>
+

@@ -8,15 +8,16 @@
 <% } %>
 
 <form id="updateForm" action="/inv/edit" method="post">
-  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  <input type="hidden" name="inv_id" value="<%= inv_id %>"> 
   
 
-    <label for="classification_id">Classification:</label>
-    <select id="classification_id" name="classification_id" required>
-        <% classifications.forEach(function(classification) { %>
-            <option value="<%= classification.classification_id %>" <%= itemData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
-        <% }); %>
-    </select>
+  <label for="classification_id">Classification:</label>
+  <select id="classification_id" name="classification_id" required>
+    <option value="" disabled <% if (!itemData.classification_id) { %>selected<% } %>>Please select an option</option>
+    <% classifications.forEach(function(classification) { %>
+      <option value="<%= classification.classification_id %>" <%= itemData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
+    <% }); %>
+  </select>
     
     <label for="make">Make (min of 3 characters):</label>
     <input type="text" id="make" name="inv_make" value="<%= inv_make %>" minlength="3" required placeholder="e.g., Toyota">
