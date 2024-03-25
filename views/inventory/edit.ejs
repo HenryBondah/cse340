@@ -1,0 +1,50 @@
+<% const validationErrors = errors || []; %>
+<% if (validationErrors.length > 0) { %>
+  <div class="errors">
+    <% validationErrors.forEach(function(error) { %>
+      <p><%= error.msg %></p>
+    <% }); %>
+  </div>
+<% } %>
+
+<form id="updateForm" action="/inv/edit" method="post">
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  
+
+    <label for="classification_id">Classification:</label>
+    <select id="classification_id" name="classification_id" required>
+        <% classifications.forEach(function(classification) { %>
+            <option value="<%= classification.classification_id %>" <%= itemData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
+        <% }); %>
+    </select>
+    
+    <label for="make">Make (min of 3 characters):</label>
+    <input type="text" id="make" name="inv_make" value="<%= inv_make %>" minlength="3" required placeholder="e.g., Toyota">
+
+    <label for="model">Model (min of 3 characters):</label>
+    <input type="text" id="model" name="inv_model" value="<%= inv_model %>" minlength="3" required placeholder="e.g., Camry">
+
+    <label for="year">Year (4 numbers):</label>
+    <input type="text" id="year" name="inv_year" value="<%= inv_year %>" pattern="^\d{4}$" required placeholder="e.g., 2020">
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="inv_description" required><%= inv_description %></textarea>
+
+    <label for="image_path">Image Path:</label>
+    <input type="text" id="image_path" name="inv_image" value="<%= inv_image %>" required placeholder="URL to the vehicle image">
+
+    <label for="thumbnail_path">Thumbnail Path:</label>
+    <input type="text" id="thumbnail_path" name="inv_thumbnail" value="<%= inv_thumbnail %>" required placeholder="URL to the vehicle thumbnail">
+
+    <label for="price">Price (Decimal or Integer):</label>
+    <input type="text" id="price" name="inv_price" value="<%= inv_price %>" pattern="^\d*(\.\d+)?$" required placeholder="e.g., 19999.99">
+
+    <label for="miles">Miles (Digits only):</label>
+    <input type="text" id="miles" name="inv_miles" value="<%= inv_miles %>" pattern="^\d+$" required placeholder="e.g., 50000">
+
+    <label for="color">Color:</label>
+    <input type="text" id="color" name="inv_color" value="<%= inv_color %>" required placeholder="e.g., Red">
+
+    <button type="submit" disabled>Update Vehicle</button>  </form>
+  <script src="/js/inv-update.js"></script>
+

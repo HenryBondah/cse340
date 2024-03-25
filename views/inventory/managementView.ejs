@@ -7,5 +7,16 @@
   <ul>
     <li><a href="/inv/add-classification">Add New Classification</a></li>
     <li><a href="/inv/add-inventory">Add New  </a></li>
+
+    <h2>Manage Inventory</h2>
+    <p>Select Classification</p>
+    <select id="classification_id" name="classification_id" required>
+      <% classifications.forEach(function(classification) { %>
+        <option value="<%= classification.classification_id %>" <%= formData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
+      <% }); %>
+    </select> 
+    <table id="inventoryDisplay"></table>
+    <noscript>JavaScript must be enabled to use this page.</noscript>
   </ul>
 </div>
+<script src="../../js/inventory.js"></script>

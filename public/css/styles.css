@@ -301,7 +301,7 @@ footer {
     .car-features {
       border: 1px solid #333;
       padding: 15px;
-      margin: 20px 0;
+      margin: 60px 0;
       background-color: rgba(248, 248, 248, 0.5);
       border-radius: 8px;
       position: absolute;
@@ -435,7 +435,7 @@ h1 {
   .detail-text {
     text-align: left; 
     position: relative;
-    right: 79px;
+    right: 3px;
   }
 }
 

@@ -1,0 +1,35 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } %>
+<%- messages() %>
+
+<% if (messages && messages.error) { %>
+  <div class="error-message">
+    <%= messages.error %>
+  </div>
+<% } %>
+
+<% if (errors && errors.length) { %>
+  <ul class="notice">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+
+<main>
+  <% if (locals.accountData) { %>
+      <h2>Welcome, <%= name %></h2>
+      
+      <% if (['Employee', 'Admin'].includes(locals.accountData.account_type)) { %>
+          <h3>Inventory Management</h3>
+          <p><a href="/inv/">Access Inventory Management</a></p>
+      <% } %>
+
+      <p><a href="/account/update/ <%= locals.accountData.account_id %>">Update Account Information</a></p>
+      
+  <% } else { %>
+      <p>You must be logged in to view this page.</p>
+  <% } %>
+</main>

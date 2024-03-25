@@ -1,4 +1,7 @@
 const invModel = require("../models/inventory-model");
+const utilities = require("../utilities/")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 const Util = {};
 
@@ -7,15 +10,12 @@ const Util = {};
  */
 Util.getNav = async function () {
     try {
-        // Fetch classifications from the database.
         const result = await invModel.getClassifications();
-        // Ensure that we're working with the array part of the result, assuming result.rows contains the array.
         const data = result.rows;
 
         let list = "<ul>";
         list += '<li><a href="/" title="Home page">Home</a></li>';
 
-        // Iterate over the data array to build navigation items.
         data.forEach((row) => {
             list += `<li><a href="/inv/type/${row.classification_id}" title="See our inventory of ${row.classification_name} vehicles">${row.classification_name}</a></li>`;
         });
@@ -24,7 +24,6 @@ Util.getNav = async function () {
         return list;
     } catch (error) {
         console.error("Error generating navigation:", error);
-        // Return a fallback navigation item in case of error.
         return "<ul><li>Error loading navigation</li></ul>";
     }
 };
@@ -53,24 +52,22 @@ Util.buildClassificationGrid = async function(data){
     return grid;
 };
 
-Util. buildClassificationList = async function (classification_id = null) {
-    let data = await invModel. getClassifications ()
-    let classificationList =
-        '<select name="classification_id" id="classificationList" required>' 
-    classificationList += "<option value=''>Choose a Classification</option>"
-    data. rows. forEach ( (row) => {
-    classificationList += '<option value="' + row.classification_id + '"'
-    if (
-        classification_id != null &&
-        row. classification_id == classification_id
-    ){
-        classificationList += " selected "
-    }
-        ClassificationList += ">" + row.classification_name + "</option>"
-})
-        classificationList += "</select>"
-        return classificationList 
+
+Util.buildClassificationList = async function (classification_id = null) {
+    let data = await invModel.getClassifications();
+    let classificationList = '<select name="classification_id" id="classificationList" required>';
+    classificationList += "<option value=''>Choose a Classification</option>";
+    data.rows.forEach((row) => {
+        classificationList += `<option value="${row.classification_id}"`;
+        if (classification_id != null && row.classification_id == classification_id) {
+            classificationList += " selected";
+        }
+        classificationList += `>${row.classification_name}</option>`; 
+    });
+    classificationList += "</select>";
+    return classificationList;
 }
+
 
 /**
  * Build the detail view HTML.
@@ -100,5 +97,55 @@ Util.buildDetailGrid = function(data) {
  * Middleware For Handling Errors - Wrap other function in this for General Error Handling.
  */
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
+
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+    if (req.cookies.jwt) {
+     jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+       if (err) {
+        req.flash("Please log in")
+        res.clearCookie("jwt")
+        return res.redirect("/account/login")
+       }
+       res.locals.accountData = accountData
+       res.locals.loggedin = 1
+       next()
+      })
+    } else {
+     next()
+    }
+   }
+   
+
+   /* ****************************************
+ *  Check Login
+ * ************************************ */
+ Util.checkLogin = (req, res, next) => {
+    if (res.locals.loggedin) {
+      next()
+    } else {
+      req.flash("notice", "Please log in.")
+      return res.redirect("/account/login")
+    }
+   }
+
+   /**
+ * Middleware to check if the user has an Employee or Admin account type.
+ * If not, redirect to the login page with an error message.
+ */
+Util.requireAdminOrEmployee = (req, res, next) => {
+    if (res.locals.loggedin && (res.locals.accountData.account_type === 'Employee' || res.locals.accountData.account_type === 'Admin')) {
+        next();
+    } else {
+        req.flash('error', 'You must be logged in as an Employee or Admin to access this page.');
+        res.redirect('/account/login');
+    }
+};
 
 module.exports = Util;

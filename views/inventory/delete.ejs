@@ -1,0 +1,28 @@
+<h1>Delete Inventory Item: <%= inv_make %> <%= inv_model %></h1>
+<%- messages() %>
+<form id="deleteForm" action="/inv/delete" method="post">
+    <input type="hidden" name="inv_id" value="<%= inv_id %>">
+
+    <div>
+        <label for="make">Make:</label>
+        <input type="text" id="make" name="inv_make" value="<%= inv_make %>" readonly>
+    </div>
+    
+    <div>
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="inv_model" value="<%= inv_model %>" readonly>
+    </div>
+
+    <div>
+        <label for="year">Year:</label>
+        <input type="text" id="year" name="inv_year" value="<%= inv_year %>" readonly>
+    </div>
+
+    <div>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="inv_price" value="<%= inv_price %>" readonly>
+    </div>
+
+    <p>Confirm Deletion - This action cannot be undone.</p>
+    <button type="submit">Delete</button>
+</form>

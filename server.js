@@ -2,90 +2,101 @@
  * This server.js file is the primary file of the 
  * application. It is used to control the project.
  *******************************************/
+
 /* ***********************
  * Require Statements
  *************************/
-const session = require("express-session")
-const pool = require('./database/')
 const express = require("express");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 const expressLayouts = require('express-ejs-layouts');
 const env = require("dotenv").config();
-const app = express();
-const static = require("./routes/static");
-const baseController = require("./controllers/baseController");
-const inventoryRoute = require("./routes/inventoryRoute");
+const pool = require('./database/');
 const utilities = require("./utilities/");
-const accountController = require('./controllers/accountController');
-const accountRoutes = require('./routes/accountRoute'); 
-const bodyParser = require("body-parser")
-const cookieParser = require("cookie-parser")
+const flash = require('connect-flash'); 
 
+// Controllers
+const baseController = require("./controllers/baseController");
+const accountController = require('./controllers/accountController');
+
+// Routes
+const staticRoute = require("./routes/static");
+const inventoryRoute = require("./routes/inventoryRoute");
+const accountRoutes = require('./routes/accountRoute');
+
+// App initialization
+const app = express();
 
 /* ***********************
  * Middleware
- * ************************/
+ ************************/
+// Session configuration
 app.use(session({
   store: new (require('connect-pg-simple')(session))({
-    createTableIfMissing: true,
-    pool,
+    pool: pool,
+    createTableIfMissing: true
   }),
   secret: process.env.SESSION_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  name: 'sessionId',
-}))
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: 'auto' }
+}));
 
+
+// Body parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // Express Messages Middleware
-app.use(require('connect-flash')())
-app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res)
-  next()
-})
+app.use(flash());
 
-
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-app.use(cookieParser())
+app.use((req, res, next) => {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 
 // View Engine and Templates
-app.set("view engine", "ejs");
 app.use(expressLayouts);
-app.set("layout", "./layouts/layout"); // not at views root
+app.set("view engine", "ejs");
+app.set("layout", "./layouts/layout"); 
+
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Routes
  *************************/
-// app.use(static);
+// Static files
 app.use(express.static('public'));
 
-
-// index route 
+// Index route
 app.get("/", baseController.buildHome);
+
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", inventoryRoute);
+
 // Account routes
-app.use("/account", require("./routes/accountRoute"))
+app.use("/account", accountRoutes);
 
 
+// Inventory add route
 app.post('/inv/add-inventory', async (req, res) => {
   const { inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id } = req.body;
-  
   try {
     const newCar = await pool.query(
       `INSERT INTO public.inventory (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
       [inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id]
     );
-
-    // Assuming you want to redirect to a success page or back to the form with a success message
-    res.redirect('/inventory'); // Adjust this to your actual route that shows the inventory or a success message
+    res.redirect('/inventory'); 
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server error");
   }
 });
 
+// Add inventory form route
 app.get('/inv/add', async (req, res) => {
   try {
     const classificationResults = await pool.query(`SELECT * FROM classifications`);
@@ -99,38 +110,56 @@ app.get('/inv/add', async (req, res) => {
   }
 });
 
+app.get('/account', (req, res) => {
+  res.render('account/account', {
+    title: 'Manage',
+    errors: req.flash('errors')
+  });
+});
 
 
-// File Not Found Route - must be last route in list
+
+app.get('/account', async (req, res) => {
+  try {
+    res.render('account/account', {
+      title: 'Account Management', 
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).render('account/account', {
+      title: 'Error',
+    });
+  }
+});
+
+
 app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
+});
 
 /* ***********************
-* Express Error Handler
-* Place after all other middleware
-*************************/
+ * Express Error Handler
+ *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
+  let nav = await utilities.getNav();
+  console.error(`Error at: "${req.originalUrl}": ${err.message}`);
+  let message = err.status == 404 ? err.message : 'Oh no! There was a crash. Maybe try a different route?';
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message,
     nav
-  })
-})
+  });
+});
 
 /* ***********************
  * Local Server Information
- * Values from .env (environment) file
  *************************/
 const port = process.env.PORT;
 const host = process.env.HOST;
 
 /* ***********************
- * Log statement to confirm server operation
+ * Server Operation Confirmation
  *************************/
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`);
+  console.log(`App listening on ${host}:${port}`);
 });
