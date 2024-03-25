@@ -175,93 +175,37 @@ async function displayUpdateAccountForm(req, res) {
   });
 }
 
-// async function processAccountUpdate(req, res) {
-//   const { account_id, firstname, lastname, email } = req.body;
-//   try {
-//     const updatedAccount = await accountModel.updateAccountDetails(account_id, firstname, lastname, email);
-//     if (updatedAccount) {
-//       const fullAccountDetails = await accountModel.getAccountById(account_id);
-      
-//       if (!fullAccountDetails) {
-//         throw new Error('Failed to retrieve updated account details.');
-//       }
-//       const userForToken = {
-//         account_id: fullAccountDetails.account_id,
-//         account_firstname: firstname, 
-//         account_lastname: lastname,
-//         account_email: email,
-//         account_type: fullAccountDetails.account_type, 
-//       };
-//       const accessToken = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
-//       if (process.env.NODE_ENV === 'development') {
-//         res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
-//       } else {
-//         res.cookie('jwt', accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 });
-//       }
-//       req.flash("success", "Account updated successfully.");
-//       res.redirect("/account/"); 
-//     }
-//   } catch (error) {
-//     console.error("updateinfo err", error);
-//     req.flash("error", "Failed to update account.");
-//     res.redirect("/account/updateAccount"); 
-//   }
-// }
-
-
 async function processAccountUpdate(req, res) {
-    const { account_id, firstname, lastname, email, newPassword } = req.body;
-    let errors = [];
-
-    // Basic example validation checks
-    if (!firstname.trim()) errors.push("First name is required.");
-    if (!lastname.trim()) errors.push("Last name is required.");
-    if (!email.trim()) errors.push("Email is required.");
-    // More sophisticated validation can be added here
-
-    // Check if the email is unique, except for the current user
-    const existingAccount = await getAccountById(account_id);
-    if (existingAccount && existingAccount.email !== email) {
-        // Assuming a function to check email uniqueness
-        const emailExists = await checkExistingEmail(email);
-        if (emailExists) errors.push("Email already exists. Please use a different one.");
+  const { account_id, firstname, lastname, email } = req.body;
+  try {
+    const updatedAccount = await accountModel.updateAccountDetails(account_id, firstname, lastname, email);
+    if (updatedAccount) {
+      const fullAccountDetails = await accountModel.getAccountById(account_id);
+      
+      if (!fullAccountDetails) {
+        throw new Error('Failed to retrieve updated account details.');
+      }
+      const userForToken = {
+        account_id: fullAccountDetails.account_id,
+        account_firstname: firstname, 
+        account_lastname: lastname,
+        account_email: email,
+        account_type: fullAccountDetails.account_type, 
+      };
+      const accessToken = jwt.sign(userForToken, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+      if (process.env.NODE_ENV === 'development') {
+        res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+      } else {
+        res.cookie('jwt', accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 });
+      }
+      req.flash("success", "Account updated successfully.");
+      res.redirect("/account/"); 
     }
-
-    if (errors.length > 0) {
-        // Re-render the form with errors and previously entered values
-        return res.render("account/update", {
-            errors,
-            accountData: { account_firstname: firstname, account_lastname: lastname, account_email: email, account_id }
-        });
-    } else {
-        // Proceed with account update logic...
-        try {
-            let updatePayload = {
-                firstname,
-                lastname,
-                email
-            };
-
-            // If newPassword is provided, hash it and add to the update payload
-            if (newPassword && newPassword.trim()) {
-                const salt = await bcrypt.genSalt(10);
-                updatePayload.account_password = await bcrypt.hash(newPassword, salt);
-            }
-
-            const updatedAccount = await updateAccountDetails(account_id, updatePayload);
-
-            // Assuming the success of the update process
-            req.flash("success", "Account updated successfully.");
-            return res.redirect("/account/");
-        } catch (error) {
-            console.error("Error updating account:", error);
-            errors.push("Failed to update account due to server error.");
-            return res.render("account/update", {
-                errors,
-                accountData: { account_firstname: firstname, account_lastname: lastname, account_email: email, account_id }
-            });
-        }
-    }
+  } catch (error) {
+    console.error("updateinfo err", error);
+    req.flash("error", "Failed to update account.");
+    res.redirect("/account/updateAccount"); 
+  }
 }
 
 
