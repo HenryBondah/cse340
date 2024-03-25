@@ -208,8 +208,6 @@ async function processAccountUpdate(req, res) {
   }
 }
 
-
-
 async function processPasswordChange(req, res) {
   const { account_id, newPassword } = req.body;
 

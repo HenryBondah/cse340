@@ -249,6 +249,7 @@ footer {
   padding: 5px;
   border-radius: 5px;
   text-decoration: none; 
+  background-color: white;
 }
 .upgrade-name:hover {
   text-decoration: underline; 
