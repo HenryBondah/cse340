@@ -4,6 +4,7 @@ const router = express.Router();
 const accountController = require('../controllers/accountController');
 const utilities = require('../utilities/');
 const regValidate = require('../utilities/account-validation');
+const validate = require('../utilities/account-validation');
 
 // Route to display the login view
 router.get("/login", accountController.buildLogin);
@@ -42,6 +43,27 @@ router.get('/update/:account_id', utilities.checkLogin, accountController.displa
 
 // Route to process the account update
 router.post('/update', utilities.checkLogin, accountController.processAccountUpdate);
+
+// In routes/accountRoute.js
+
+router.post("/update/:account_id",
+  validate.updateAccountRules(),
+  async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      let nav = await utilities.getNav();
+      return res.render("/account/update", {
+        title: "Update Account Information",
+        nav,
+        errors: errors.array(),
+        account: req.body, // Pass back the submitted data to re-populate the form
+      });
+    }
+    next();
+  },
+  accountController.processAccountUpdate
+);
+
 
 // Route to process the password change
 router.post('/changePassword', utilities.checkLogin, accountController.processPasswordChange);

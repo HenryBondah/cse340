@@ -27,7 +27,7 @@ router.get("/type/:classificationId", invController.buildByClassificationId);
 router.get("/detail/:detailId", invController.buildByDetailId);
 
 // Route to show the management view
-router.get('/', invController.showManagementView);
+router.get('/', utilities.requireAdminOrEmployee, invController.showManagementView);
 
 // Route to show the edit view with error handling
 router.get('/edit/:inv_id', utilities.handleErrors(invController.editInventoryView));

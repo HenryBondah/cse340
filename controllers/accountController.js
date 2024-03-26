@@ -8,6 +8,7 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const validate = require('../utilities/account-validation');
 
 /* ****************************************
  *  Deliver login view
@@ -156,24 +157,51 @@ async function buildAccount(req, res, next) {
 
 }
 
+// async function displayUpdateAccountForm(req, res) {
+//   let nav = await utilities.getNav(); 
+//   const accountId = req.params.account_id; 
+//   const accountData = await accountModel.getAccountById(accountId);
+//   if (!accountData) {
+//     req.flash("error", "Account not found.");
+//     return res.redirect("/account"); 
+//   }
+//   const { account_firstname, account_lastname, account_email, account_id } = accountData;
+//   res.render("account/update", {
+//     title: "Update Account Information",
+//     nav,
+//     account_firstname,
+//     account_lastname,
+//     account_email,
+//     account_id 
+//   });
+// }
 async function displayUpdateAccountForm(req, res) {
-  let nav = await utilities.getNav(); 
-  const accountId = req.params.account_id; 
-  const accountData = await accountModel.getAccountById(accountId);
-  if (!accountData) {
-    req.flash("error", "Account not found.");
-    return res.redirect("/account"); 
-  }
-  const { account_firstname, account_lastname, account_email, account_id } = accountData;
-  res.render("account/update", {
-    title: "Update Account Information",
-    nav,
-    account_firstname,
-    account_lastname,
-    account_email,
-    account_id 
-  });
-}
+  // Assuming `accountId` is passed as a URL parameter
+  const accountId = req.params.account_id;
+  try {
+    const accountData = await accountModel.getAccountById(accountId);
+    if (!accountData) {
+      // Handle case where account is not found
+      req.flash("error", "Account not found.");
+      return res.redirect("/account");
+    }
+    // Make sure to pass an empty errors array if there are no errors
+    let nav = await utilities.getNav(); 
+    res.render("account/update", {
+      title: "Update Account Information",
+      nav,
+      errors: [], // Pass an empty array if there's no errors
+      account_firstname: accountData.account_firstname,
+      account_lastname: accountData.account_lastname,
+      account_email: accountData.account_email,
+      account_id: accountData.account_id,
+    });
+  } catch (error) {
+    // Handle potential errors, such as database issues
+    console.error("Update account form error:", error);
+    res.redirect("/account"); // Or render an error page
+  }}
+
 
 async function processAccountUpdate(req, res) {
   const { account_id, firstname, lastname, email } = req.body;
@@ -204,7 +232,7 @@ async function processAccountUpdate(req, res) {
   } catch (error) {
     console.error("updateinfo err", error);
     req.flash("error", "Failed to update account.");
-    res.redirect("/account/updateAccount"); 
+    res.redirect("/account/uodate"); 
   }
 }
 
@@ -219,7 +247,7 @@ async function processPasswordChange(req, res) {
   } catch (error) {
     console.error(error);
     req.flash("error", "Failed to change password.");
-    res.redirect("/account/updateAccount"); 
+    res.redirect("/"); 
   }
 }
 
