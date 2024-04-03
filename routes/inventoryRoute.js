@@ -22,7 +22,9 @@ router.post('/add-inventory', utilities.requireAdminOrEmployee, invValidation.ad
 
 // Route to display inventory items by classification
 router.get("/type/:classificationId", invController.buildByClassificationId);
+// Assuming this is in routes/inventoryRoute.js
 
+router.get('/getInventory/:classificationId', invController.getInventoryJSON);
 // Route to display detailed view of an inventory item
 router.get("/detail/:detailId", invController.buildByDetailId);
 
@@ -49,7 +51,13 @@ router.get("/trigger-error", (req, res, next) => {
 });
 
 // Route to return inventory by classification as JSON with error handling
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON));
+router.get('/approve/classification/:classification_id', utilities.requireAdminOrEmployee, invController.approveClassification);
+
+// Route to show the approval view
+router.get('/approve', utilities.requireAdminOrEmployee, invController.showApprovalView);
+
+
+router.get('/approve/inventory/:inv_id', utilities.requireAdminOrEmployee, invController.approveInventoryItem);
 
 // Export the router module
 module.exports = router;

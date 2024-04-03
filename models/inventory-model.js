@@ -16,14 +16,16 @@ async function getInventoryByClassificationId(classification_id) {
       `SELECT * FROM public.inventory AS i 
       JOIN public.classification AS c 
       ON i.classification_id = c.classification_id 
-      WHERE i.classification_id = $1`,
+      WHERE i.classification_id = $1 AND i.inv_approved = true`,
       [classification_id]
-    )
-    return data.rows
+    );
+    return data.rows;
   } catch (error) {
-    console.error("getclassificationsbyid error " + error)
+    console.error("getInventoryByClassificationId error: " + error);
+    throw error; 
   }
 }
+
 
 // In inventory-model.js
 async function getInventoryByDetailId(detail_id) {
@@ -37,6 +39,16 @@ async function getInventoryByDetailId(detail_id) {
     console.error("Error fetching inventory detail: ", error);
   }
 }
+
+// In models/inventory-model.js
+async function checkClassificationExistence(classificationName) {
+  const result = await pool.query(
+      "SELECT * FROM classification WHERE classification_name = $1",
+      [classificationName]
+  );
+  return result.rows.length > 0; 
+}
+
 // Add a new classification to the database
 async function addClassification(classificationName) {
   try {
@@ -51,7 +63,6 @@ async function addClassification(classificationName) {
 }
 
 // Add a new inventory item to the database
-// In inventory-model.js
 
 async function addInventoryItem(inventoryData) {
   try {
@@ -89,14 +100,16 @@ async function addInventoryItem(inventoryData) {
 }
 
 async function getInventoryById(inv_id) {
+  const query = `SELECT * FROM inventory WHERE inv_id = $1`;
   try {
-      const result = await pool.query("SELECT * FROM public.inventory WHERE inv_id = $1", [inv_id]);
+      const result = await pool.query(query, [inv_id]);
       return result.rows[0]; 
   } catch (error) {
       console.error("Error fetching inventory by ID:", error);
       throw error;
   }
 }
+
 
 async function updateInventory(
   inv_id,
@@ -144,4 +157,125 @@ async function deleteInventoryItem(inv_id) {
   }
 }
 
-module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByDetailId, addClassification, addInventoryItem, getInventoryById, updateInventory, deleteInventoryItem };
+async function getUnapprovedClassifications() {
+  const query = "SELECT * FROM classification WHERE classification_approved = false";
+  try {
+      const result = await pool.query(query);
+      return result.rows;
+  } catch (err) {
+      console.error(err);
+      throw err;
+  }
+}
+async function getUnapprovedInventoryItems() {
+  const query = "SELECT * FROM inventory WHERE inv_approved = false";
+  try {
+      const result = await pool.query(query);
+      return result.rows;
+  } catch (err) {
+      console.error(err);
+      throw err;
+  }
+}
+
+// async function getClassificationsWithApprovedItems() {
+//   const query = `
+//       SELECT DISTINCT c.classification_id, c.classification_name 
+//       FROM classification c
+//       INNER JOIN inventory i ON c.classification_id = i.classification_id 
+//       WHERE c.classification_approved = true AND i.inv_approved = true
+//       ORDER BY c.classification_name`;
+//   try {
+//       const result = await pool.query(query);
+//       return result.rows;
+//   } catch (err) {
+//       console.error("Error fetching classifications with approved items: ", err);
+//       throw err;
+//   }
+// }
+
+async function getClassificationsWithApprovedItems() {
+  const query = `
+      SELECT DISTINCT c.classification_id, c.classification_name 
+      FROM classification c
+      INNER JOIN inventory i ON c.classification_id = i.classification_id 
+      WHERE c.classification_approved = true AND i.inv_approved = true
+      ORDER BY c.classification_name`;
+  try {
+      const result = await pool.query(query);
+      return result.rows;
+  } catch (err) {
+      console.error("Error fetching classifications with approved items: ", err);
+      throw err;
+  }
+}
+
+
+
+async function getUnapprovedInventoryItemsWithClassification() {
+  const query = `
+      SELECT i.*, c.classification_name 
+      FROM inventory i
+      JOIN classification c ON i.classification_id = c.classification_id 
+      WHERE i.inv_approved = false
+      ORDER BY c.classification_name, i.inv_make, i.inv_model`;
+  try {
+      const result = await pool.query(query);
+      return result.rows;
+  } catch (err) {
+      console.error("Error fetching unapproved inventory items with classification: ", err);
+      throw err;
+  }
+}
+
+async function approveInventoryItemById(invId, accountId) {
+  const query = `
+      UPDATE inventory
+      SET inv_approved = true, account_id = $2, in_approved_date = NOW()
+      WHERE inv_id = $1
+      RETURNING *`;
+  try {
+      const result = await pool.query(query, [invId, accountId]);
+      return result.rows[0]; 
+  } catch (err) {
+      console.error("Error approving inventory item by ID:", err);
+      throw err;
+  }
+}
+
+async function approveClassificationById(classificationId, accountId) {
+  const query = `
+      UPDATE classification 
+      SET classification_approved = TRUE, 
+          account_id = $2, 
+          classification_approval_date = NOW()
+      WHERE classification_id = $1
+      RETURNING *;`;
+
+  try {
+      const res = await pool.query(query, [classificationId, accountId]);
+      return res.rows[0];
+  } catch (err) {
+      console.error("Error approving classification by ID:", err);
+      throw err;
+  }
+}
+async function approveInventoryItem (req, res) {
+};
+
+async function getApprovedClassifications() {
+  try {
+      const result = await pool.query("SELECT * FROM classification WHERE is_approved = TRUE ORDER BY classification_name");
+      return result.rows;
+  } catch (error) {
+      console.error("Error fetching approved classifications:", error);
+      throw error;
+  }
+}
+
+
+module.exports = { getClassifications, getInventoryByClassificationId, getInventoryByDetailId, 
+  addClassification, addInventoryItem, getInventoryById, updateInventory, deleteInventoryItem, 
+  getClassificationsWithApprovedItems, getUnapprovedInventoryItems, getUnapprovedClassifications, 
+  getUnapprovedInventoryItemsWithClassification, approveInventoryItemById, approveClassificationById, 
+  checkClassificationExistence, getApprovedClassifications, approveInventoryItem };

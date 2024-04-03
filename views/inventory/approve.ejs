@@ -1,0 +1,58 @@
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } %>
+<%- messages() %>
+
+<section>
+  <h2>Unapproved Classifications</h2>
+  <% if (unapprovedClassifications.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Classification Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unapprovedClassifications.forEach(function(classification) { %>
+          <tr>
+            <td><%= classification.classification_name %></td>
+            <td>
+              <a href="/inv/approve/classification/<%= classification.classification_id %>">Approve</a> 
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No unapproved classifications available.</p>
+  <% } %>
+</section>
+
+<section>
+  <h2>Unapproved Inventory Items</h2>
+  <% if (unapprovedInventoryItems.length > 0) { %>
+    <table>
+      <thead>
+        <tr>
+          <th>Inventory Item</th>
+          <th>Classification</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% unapprovedInventoryItems.forEach(function(item) { %>
+          <tr>
+              <td><%= item.inv_make %> <%= item.inv_model %></td>
+              <td><%= item.classification_name %></td> <!-- Display classification name -->
+              <td>
+                  <a href="/inv/approve/inventory/<%= item.inv_id %>">Approve</a> 
+              </td>
+          </tr>
+      <% }); %>
+      </tbody>
+    </table>
+  <% } else { %>
+    <p>No unapproved inventory items available.</p>
+  <% } %>
+</section>

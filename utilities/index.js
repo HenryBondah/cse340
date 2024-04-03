@@ -10,8 +10,7 @@ const Util = {};
  */
 Util.getNav = async function () {
     try {
-        const result = await invModel.getClassifications();
-        const data = result.rows;
+        const data = await invModel.getClassificationsWithApprovedItems();
 
         let list = "<ul>";
         list += '<li><a href="/" title="Home page">Home</a></li>';

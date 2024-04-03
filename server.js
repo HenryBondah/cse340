@@ -15,6 +15,8 @@ const env = require("dotenv").config();
 const pool = require('./database/');
 const utilities = require("./utilities/");
 const flash = require('connect-flash'); 
+const jwt = require('jsonwebtoken');
+
 
 // Controllers
 const baseController = require("./controllers/baseController");
@@ -49,6 +51,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser())
 
+app.use((req, res, next) => {
+  const token = req.cookies.jwt;
+  if (token) {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decodedToken) => {
+          if (err) {
+              console.log("JWT verification error:", err);
+              next();
+          } else {
+              req.accountData = { account_id: decodedToken.account_id };
+              next();
+          }
+      });
+  } else {
+      console.log("No JWT found");
+      next();
+  }
+});
 // Express Messages Middleware
 app.use(flash());
 

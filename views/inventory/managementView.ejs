@@ -10,12 +10,17 @@
   </ul>
   <h2>Manage Inventory</h2>
   <p>Select Classification</p>
+  
   <select id="classification_id" name="classification_id" required>
-      <option value="" disabled selected>Select your option</option>
-      <% classifications.forEach(function(classification) { %>
-      <option value="<%= classification.classification_id %>" <%= formData.classification_id == classification.classification_id ? 'selected' : '' %>><%= classification.classification_name %></option>
-      <% }); %>
-  </select>
+    <option value="" disabled selected>Select a classification</option>
+    <% classifications.forEach(function(classification) { %>
+        <option value="<%= classification.classification_id %>">
+            <%= classification.classification_name %>
+        </option>
+    <% }); %>
+</select>
+
+
   <table id="inventoryDisplay"></table>
   <noscript>JavaScript must be enabled to use this page.</noscript>
 

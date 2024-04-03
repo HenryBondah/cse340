@@ -157,24 +157,6 @@ async function buildAccount(req, res, next) {
 
 }
 
-// async function displayUpdateAccountForm(req, res) {
-//   let nav = await utilities.getNav(); 
-//   const accountId = req.params.account_id; 
-//   const accountData = await accountModel.getAccountById(accountId);
-//   if (!accountData) {
-//     req.flash("error", "Account not found.");
-//     return res.redirect("/account"); 
-//   }
-//   const { account_firstname, account_lastname, account_email, account_id } = accountData;
-//   res.render("account/update", {
-//     title: "Update Account Information",
-//     nav,
-//     account_firstname,
-//     account_lastname,
-//     account_email,
-//     account_id 
-//   });
-// }
 async function displayUpdateAccountForm(req, res) {
   // Assuming `accountId` is passed as a URL parameter
   const accountId = req.params.account_id;

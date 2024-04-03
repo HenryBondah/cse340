@@ -602,6 +602,39 @@ button:hover {
   background-color: #0056b3;
 }
 
+.unapproved-section {
+  margin-bottom: 20px;
+}
+.unapproved-section h2 {
+  margin-bottom: 10px;
+}
+
+
+
+table {
+  width: 60%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+
+
 /* Small Screens Adjustments */
 @media (max-width: 768px) {
   form, .management-container {
